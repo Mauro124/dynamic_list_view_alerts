@@ -18,10 +18,36 @@ class DynamicAlert {
   });
 }
 
+class DynamicListViewAlertsStyle {
+  final Color? backgroundColor;
+  final Color? borderColor;
+  final Color? textColor;
+  final Color? titleTextColor;
+  final Color? dateTextColor;
+  final DynamicListViewAlertsRowStyle? rowStyle;
+
+  DynamicListViewAlertsStyle({
+    this.backgroundColor,
+    this.borderColor,
+    this.textColor,
+    this.titleTextColor,
+    this.dateTextColor,
+    this.rowStyle,
+  });
+}
+
+class DynamicListViewAlertsRowStyle {
+  final TextStyle? titleTextStyle;
+  final TextStyle? messageTextStyle;
+
+  DynamicListViewAlertsRowStyle({this.titleTextStyle, this.messageTextStyle});
+}
+
 class DynamicListViewAlerts extends StatefulWidget {
   final List<DynamicAlert> alerts;
+  final DynamicListViewAlertsStyle? style;
 
-  const DynamicListViewAlerts({super.key, required this.alerts});
+  const DynamicListViewAlerts({super.key, required this.alerts, this.style});
 
   @override
   State<DynamicListViewAlerts> createState() => _DynamicListViewAlertsState();
@@ -71,7 +97,7 @@ class _DynamicListViewAlertsState extends State<DynamicListViewAlerts> {
                     date,
                     style: Theme.of(context).textTheme.titleSmall!.copyWith(
                       fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.secondary,
+                      color: widget.style?.titleTextColor ?? Theme.of(context).colorScheme.secondary,
                     ),
                   ),
                 ),
@@ -80,9 +106,13 @@ class _DynamicListViewAlertsState extends State<DynamicListViewAlerts> {
                   height: 52,
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.secondary.withValues(alpha: 0.5),
+                    color:
+                        widget.style?.backgroundColor ?? Theme.of(context).colorScheme.secondary.withValues(alpha: 0.5),
                     borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: Theme.of(context).colorScheme.secondary, width: 1),
+                    border: Border.all(
+                      color: widget.style?.borderColor ?? Theme.of(context).colorScheme.secondary,
+                      width: 1,
+                    ),
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -121,8 +151,9 @@ class _DynamicListViewAlertsState extends State<DynamicListViewAlerts> {
 
 class _Row extends StatefulWidget {
   final DynamicAlert alert;
+  final DynamicListViewAlertsRowStyle? style;
 
-  const _Row({super.key, required this.alert});
+  const _Row({super.key, required this.alert, this.style});
 
   @override
   State<_Row> createState() => _RowState();
@@ -142,10 +173,10 @@ class _RowState extends State<_Row> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           if (widget.alert.title != '') ...[
-            Text(widget.alert.title!, style: Theme.of(context).textTheme.headlineSmall),
+            Text(widget.alert.title!, style: widget.style?.titleTextStyle ?? Theme.of(context).textTheme.headlineSmall),
             SizedBox(width: 8),
           ],
-          Text(widget.alert.message, style: Theme.of(context).textTheme.bodyLarge!),
+          Text(widget.alert.message, style: widget.style?.messageTextStyle ?? Theme.of(context).textTheme.bodyLarge!),
           Spacer(),
           Visibility(
             visible: !isHovered,
@@ -157,7 +188,7 @@ class _RowState extends State<_Row> {
             ),
             child: Text(
               '${widget.alert.createdAt.hour.toString().padRight(2, '0')}:${widget.alert.createdAt.minute.toString().padRight(2, '0')}',
-              style: Theme.of(context).textTheme.bodyLarge!,
+              style: widget.style?.messageTextStyle ?? Theme.of(context).textTheme.bodyLarge!,
             ),
           ),
         ],
