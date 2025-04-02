@@ -11,29 +11,75 @@ and the Flutter guide for
 [developing packages and plugins](https://flutter.dev/to/develop-packages).
 -->
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+# Dynamic List View Alerts
 
-## Features
+`dynamic_list_view_alerts` es un paquete de Flutter que permite mostrar una lista dinámica de alertas agrupadas por fecha. Cada alerta incluye información como título, mensaje, fecha de creación y acciones ocultas que se pueden mostrar al interactuar con la alerta.
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+## Características
 
-## Getting started
+- Agrupación automática de alertas por fecha.
+- Interfaz interactiva con soporte para acciones ocultas al pasar el cursor sobre una alerta.
+- Personalización de estilos utilizando el tema de Flutter.
+- Soporte para mostrar alertas leídas y no leídas.
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+## Instalación
 
-## Usage
+Agrega el paquete a tu archivo `pubspec.yaml`:
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
-
-```dart
-const like = 'sample';
+```yaml
+dependencies:
+  dynamic_list_view_alerts:
+    git:
+      url: https://github.com/tu-repositorio/dynamic_list_view_alerts.git
 ```
 
-## Additional information
+Luego, ejecuta:
+`flutter pub get`
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+## Uso
+Ejemplo básico de cómo usar el paquete:
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:dynamic_list_view_alerts/dynamic_list_view_alerts.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('Dynamic List View Alerts')),
+        body: DynamicListViewAlerts(
+          alerts: [
+            DynamicAlert(
+              id: '1',
+              title: 'Alerta 1',
+              message: 'Este es un mensaje de prueba.',
+              createdAt: DateTime.now(),
+              isRead: false,
+              hidenActions: [TextButton(onPressed: () {}, child: const Text('Acción'))],
+            ),
+            DynamicAlert(
+              id: '2',
+              title: 'Alerta 2',
+              message: 'Otro mensaje de prueba.',
+              createdAt: DateTime.now().subtract(const Duration(days: 1)),
+              isRead: true,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+```
+
+## Personalización
+Puedes personalizar los estilos de las alertas utilizando el tema de tu aplicación. Por ejemplo, puedes cambiar los colores, fuentes y tamaños de texto a través de ThemeData.
+
