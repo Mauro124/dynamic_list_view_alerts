@@ -22,7 +22,6 @@ class DynamicListViewAlertsStyle {
   final Color? backgroundColor;
   final Color? borderColor;
   final Color? textColor;
-  final Color? titleTextColor;
   final Color? dateTextColor;
   final DynamicListViewAlertsRowStyle? rowStyle;
 
@@ -30,7 +29,6 @@ class DynamicListViewAlertsStyle {
     this.backgroundColor,
     this.borderColor,
     this.textColor,
-    this.titleTextColor,
     this.dateTextColor,
     this.rowStyle,
   });
@@ -97,7 +95,7 @@ class _DynamicListViewAlertsState extends State<DynamicListViewAlerts> {
                     date,
                     style: Theme.of(context).textTheme.titleSmall!.copyWith(
                       fontWeight: FontWeight.bold,
-                      color: widget.style?.titleTextColor ?? Theme.of(context).colorScheme.secondary,
+                      color: widget.style?.dateTextColor ?? Theme.of(context).colorScheme.secondary,
                     ),
                   ),
                 ),
