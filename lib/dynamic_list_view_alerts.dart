@@ -6,6 +6,8 @@ class DynamicAlert {
   final String message;
   final DateTime createdAt;
   final bool isRead;
+  final Icon? leadingIcon;
+  final List<Widget>? actions;
   final List<Widget>? hidenActions;
 
   DynamicAlert({
@@ -14,6 +16,8 @@ class DynamicAlert {
     required this.createdAt,
     required this.isRead,
     this.title,
+    this.leadingIcon,
+    this.actions,
     this.hidenActions,
   });
 }
@@ -126,6 +130,8 @@ class _DynamicListViewAlertsState extends State<DynamicListViewAlerts> {
                                 message: alert.message,
                                 createdAt: alert.createdAt,
                                 isRead: alert.isRead,
+                                leadingIcon: alert.leadingIcon,
+                                actions: alert.actions,
                                 hidenActions: alert.hidenActions,
                               ),
                             ),
@@ -167,15 +173,17 @@ class _RowState extends State<_Row> {
       onEnter: (_) => setState(() => isHovered = true),
       onExit: (_) => setState(() => isHovered = false),
       child: Row(
+        spacing: 8,
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
+          if (widget.alert.leadingIcon != null) widget.alert.leadingIcon!,
           if (widget.alert.title != '') ...[
             Text(widget.alert.title!, style: widget.style?.titleTextStyle ?? Theme.of(context).textTheme.headlineSmall),
-            SizedBox(width: 8),
           ],
           Text(widget.alert.message, style: widget.style?.messageTextStyle ?? Theme.of(context).textTheme.bodyLarge!),
           Spacer(),
+          if (widget.alert.actions != null) Row(children: widget.alert.actions!),
           Visibility(
             visible: !isHovered,
             replacement: Row(
